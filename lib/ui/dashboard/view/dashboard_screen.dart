@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../view_model/dashboard_view_model.dart';
 import '../../core/themes/app_colors.dart';
@@ -12,6 +13,7 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<DashboardViewModel>();
     final colors = AppColorScheme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: colors.background,
       appBar: const EnerGymAppBar(),
@@ -20,13 +22,13 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('¿Listo para superar tus límites hoy?',
+            Text(l10n.dashboardGreeting,
                 style: TextStyle(color: colors.textSecondary, fontSize: 13)),
             const SizedBox(height: 16),
             _StreakCard(streakDays: vm.streakDays),
             const SizedBox(height: 12),
             _InfoCard(
-              label: 'ÚLTIMO ENTRENO',
+              label: l10n.lastWorkout,
               trailing: Icon(Icons.history, color: colors.textSecondary, size: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +43,7 @@ class DashboardScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             _InfoCard(
-              label: 'PRÓXIMA SESIÓN',
+              label: l10n.nextSession,
               trailing: Icon(Icons.calendar_today_outlined, color: colors.textSecondary, size: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,6 +75,8 @@ class _StreakCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = AppColorScheme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(20),
@@ -88,21 +92,21 @@ class _StreakCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('RACHA DE ENTRENAMIENTO',
-              style: TextStyle(color: AppColors.accent, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.5)),
+          Text(l10n.workoutStreak,
+              style: const TextStyle(color: AppColors.accent, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.5)),
           const SizedBox(height: 8),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text('$streakDays',
                   style: TextStyle(
-                      color: AppColorScheme.of(context).textPrimary,
+                      color: colors.textPrimary,
                       fontSize: 56, fontWeight: FontWeight.w900, height: 1)),
               const SizedBox(width: 8),
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: Text('DÍAS',
-                    style: TextStyle(color: AppColorScheme.of(context).textSecondary,
+                child: Text(l10n.days,
+                    style: TextStyle(color: colors.textSecondary,
                         fontSize: 18, fontWeight: FontWeight.w700)),
               ),
             ],
@@ -113,13 +117,13 @@ class _StreakCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 14),
               decoration: BoxDecoration(color: AppColors.accent, borderRadius: BorderRadius.circular(10)),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.play_arrow_rounded, color: Colors.black, size: 20),
-                  SizedBox(width: 8),
-                  Text('INICIAR ENTRENAMIENTO',
-                      style: TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w800, letterSpacing: 1)),
+                  const Icon(Icons.play_arrow_rounded, color: Colors.black, size: 20),
+                  const SizedBox(width: 8),
+                  Text(l10n.startWorkout,
+                      style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w800, letterSpacing: 1)),
                 ],
               ),
             ),
@@ -173,6 +177,7 @@ class _AttendanceCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColorScheme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -186,7 +191,7 @@ class _AttendanceCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('ASISTENCIA',
+              Text(l10n.attendance,
                   style: TextStyle(color: colors.textSecondary, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.5)),
               const Text('Mayo 2024', style: TextStyle(color: AppColors.accent, fontSize: 11, fontWeight: FontWeight.w600)),
             ],
@@ -248,6 +253,7 @@ class _GoalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColorScheme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -277,10 +283,10 @@ class _GoalCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('OBJETIVO MENSUAL',
-                  style: TextStyle(color: AppColors.accent, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1)),
+              Text(l10n.monthlyGoal,
+                  style: const TextStyle(color: AppColors.accent, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1)),
               const SizedBox(height: 4),
-              Text('Ve 2 días adelantado', style: TextStyle(color: colors.textSecondary, fontSize: 12)),
+              Text(l10n.daysAhead, style: TextStyle(color: colors.textSecondary, fontSize: 12)),
             ],
           ),
         ],
@@ -293,6 +299,7 @@ class _CommunityCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColorScheme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       height: 120,
       decoration: BoxDecoration(
@@ -314,11 +321,11 @@ class _CommunityCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(color: AppColors.accent, borderRadius: BorderRadius.circular(4)),
-                  child: const Text('COMUNIDAD',
-                      style: TextStyle(color: Colors.black, fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: 1)),
+                  child: Text(l10n.community,
+                      style: const TextStyle(color: Colors.black, fontSize: 9, fontWeight: FontWeight.w800, letterSpacing: 1)),
                 ),
                 const SizedBox(height: 6),
-                Text('NUEVOS DESAFÍOS DE JUNIO',
+                Text(l10n.communityChallenge,
                     style: TextStyle(color: colors.textPrimary, fontSize: 15, fontWeight: FontWeight.w800)),
               ],
             ),

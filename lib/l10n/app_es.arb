@@ -1,0 +1,89 @@
+{
+  "@@locale": "es",
+
+  "elitePerformance": "ALTO RENDIMIENTO",
+  "heroTagline": "COMBUSTIBLE PARA\nTU AMBICIÓN",
+  "emailAddress": "CORREO ELECTRÓNICO",
+  "emailHint": "nombre@dominio.com",
+  "password": "CONTRASEÑA",
+  "forgotPassword": "¿Olvidaste tu contraseña?",
+  "logIn": "INICIAR SESIÓN",
+  "orContinueWith": "O CONTINUAR CON",
+  "newToEnerGym": "¿NUEVO EN ENERGYM?",
+  "signUpNow": "REGÍSTRATE YA",
+
+  "dashboardGreeting": "¿Listo para superar tus límites hoy?",
+  "workoutStreak": "RACHA DE ENTRENAMIENTO",
+  "days": "DÍAS",
+  "startWorkout": "INICIAR ENTRENAMIENTO",
+  "lastWorkout": "ÚLTIMO ENTRENO",
+  "nextSession": "PRÓXIMA SESIÓN",
+  "attendance": "ASISTENCIA",
+  "monthlyGoal": "OBJETIVO MENSUAL",
+  "daysAhead": "Llevas 2 días adelantado",
+  "community": "COMUNIDAD",
+  "communityChallenge": "NUEVOS DESAFÍOS DE JUNIO",
+
+  "currentExercise": "EJERCICIO ACTUAL",
+  "restSeconds": "DESCANSO (SEG.)",
+  "velocity": "VELOC.",
+  "series": "SERIES",
+  "target": "OBJETIVO",
+  "repsAt": "{reps} REPS @ {weight}kg",
+  "@repsAt": {
+    "placeholders": {
+      "reps": { "type": "int" },
+      "weight": { "type": "int" }
+    }
+  },
+  "weightKg": "PESO (KG)",
+  "repetitions": "REPETICIONES",
+  "completeSet": "COMPLETAR SERIE",
+  "upcomingExercises": "EJERCICIOS SIGUIENTES",
+  "remaining": "{count} RESTANTES",
+  "@remaining": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "monthlyAttendance": "ASISTENCIA MENSUAL",
+  "sessions": "SESIONES",
+  "consistency": "CONSISTENCIA",
+  "recentActivity": "ACTIVIDAD RECIENTE",
+  "viewAll": "VER TODO",
+  "kcal": "kcal",
+
+  "currentWeight": "PESO ACTUAL",
+  "kg": "KG",
+  "height": "ALTURA",
+  "cm": "CM",
+  "bodyFat": "% GRASA",
+  "mainLiftProgression": "PROGRESIÓN DE LEVANTAMIENTOS",
+  "trainingGoals": "METAS DE ENTRENAMIENTO",
+  "targetWeight": "Peso Objetivo: {weight}kg",
+  "@targetWeight": {
+    "placeholders": {
+      "weight": { "type": "int" }
+    }
+  },
+  "weeklySession": "Sesión Semanal: {done}/{target}",
+  "@weeklySession": {
+    "placeholders": {
+      "done": { "type": "int" },
+      "target": { "type": "int" }
+    }
+  },
+  "updateGoals": "ACTUALIZAR METAS",
+  "appPreferences": "PREFERENCIAS",
+  "notifications": "Notificaciones",
+  "darkMode": "Modo Oscuro",
+  "language": "Idioma",
+  "syncHealthKit": "Sincronizar Health Kit",
+  "logOut": "Cerrar Sesión",
+
+  "navHome": "Inicio",
+  "navWorkout": "Entreno",
+  "navHistory": "Historial",
+  "navProfile": "Perfil"
+}

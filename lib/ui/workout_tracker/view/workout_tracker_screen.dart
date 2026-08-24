@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../view_model/workout_tracker_view_model.dart';
 import '../../core/themes/app_colors.dart';
@@ -12,6 +13,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<WorkoutTrackerViewModel>();
     final colors = AppColorScheme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: colors.background,
       appBar: const EnerGymAppBar(),
@@ -20,7 +22,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('CURRENT EXERCISE',
+            Text(l10n.currentExercise,
                 style: TextStyle(color: colors.textSecondary, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.5)),
             const SizedBox(height: 6),
             Text(vm.currentExercise,
@@ -31,7 +33,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      Text('REST (SEC.)', style: TextStyle(color: colors.textSecondary, fontSize: 10, letterSpacing: 1)),
+                      Text(l10n.restSeconds, style: TextStyle(color: colors.textSecondary, fontSize: 10, letterSpacing: 1)),
                       const SizedBox(height: 4),
                       Text(vm.restFormatted,
                           style: const TextStyle(color: AppColors.accent, fontSize: 28, fontWeight: FontWeight.w900)),
@@ -42,7 +44,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
                 Expanded(
                   child: Column(
                     children: [
-                      Text('VELOC.', style: TextStyle(color: colors.textSecondary, fontSize: 10, letterSpacing: 1)),
+                      Text(l10n.velocity, style: TextStyle(color: colors.textSecondary, fontSize: 10, letterSpacing: 1)),
                       const SizedBox(height: 4),
                       Text('${vm.velocity} m/s',
                           style: TextStyle(color: colors.textPrimary, fontSize: 22, fontWeight: FontWeight.w900)),
@@ -58,7 +60,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('SERIES', style: TextStyle(color: colors.textSecondary, fontSize: 10, letterSpacing: 1)),
+                      Text(l10n.series, style: TextStyle(color: colors.textSecondary, fontSize: 10, letterSpacing: 1)),
                       const SizedBox(height: 4),
                       Text('SET ${vm.currentSet} / ${vm.totalSets}',
                           style: TextStyle(color: colors.textPrimary, fontSize: 20, fontWeight: FontWeight.w900)),
@@ -68,9 +70,9 @@ class WorkoutTrackerScreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Text('TARGET', style: TextStyle(color: colors.textSecondary, fontSize: 10, letterSpacing: 1)),
+                    Text(l10n.target, style: TextStyle(color: colors.textSecondary, fontSize: 10, letterSpacing: 1)),
                     const SizedBox(height: 4),
-                    Text('${vm.targetReps} REPS @ ${vm.targetWeightKg.toInt()}kg',
+                    Text(l10n.repsAt(vm.targetReps, vm.targetWeightKg.toInt()),
                         style: TextStyle(color: colors.textPrimary, fontSize: 14, fontWeight: FontWeight.w700)),
                   ],
                 ),
@@ -78,7 +80,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
             )),
             const SizedBox(height: 12),
             _CounterCard(
-              label: 'WEIGHT (KG)',
+              label: l10n.weightKg,
               value: vm.weightKg % 1 == 0 ? vm.weightKg.toInt().toString() : vm.weightKg.toString(),
               onDecrement: vm.decrementWeight,
               onIncrement: vm.incrementWeight,
@@ -86,7 +88,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             _CounterCard(
-              label: 'REPETITIONS',
+              label: l10n.repetitions,
               value: '${vm.reps}',
               onDecrement: vm.decrementReps,
               onIncrement: vm.incrementReps,
@@ -98,13 +100,13 @@ class WorkoutTrackerScreen extends StatelessWidget {
               child: Container(
                 height: 56,
                 decoration: BoxDecoration(color: AppColors.accent, borderRadius: BorderRadius.circular(12)),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(Icons.check_circle_outline, color: Colors.black, size: 20),
-                    SizedBox(width: 10),
-                    Text('COMPLETE SET',
-                        style: TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w800, letterSpacing: 1.5)),
+                    const Icon(Icons.check_circle_outline, color: Colors.black, size: 20),
+                    const SizedBox(width: 10),
+                    Text(l10n.completeSet,
+                        style: const TextStyle(color: Colors.black, fontSize: 14, fontWeight: FontWeight.w800, letterSpacing: 1.5)),
                   ],
                 ),
               ),
@@ -113,10 +115,10 @@ class WorkoutTrackerScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('UPCOMING EXERCISES',
+                Text(l10n.upcomingExercises,
                     style: TextStyle(color: colors.textSecondary, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.5)),
-                const Text('${3} REMAINING',
-                    style: TextStyle(color: AppColors.accent, fontSize: 10, fontWeight: FontWeight.w700)),
+                Text(l10n.remaining(vm.upcoming.length),
+                    style: const TextStyle(color: AppColors.accent, fontSize: 10, fontWeight: FontWeight.w700)),
               ],
             ),
             const SizedBox(height: 10),

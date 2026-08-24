@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../view_model/login_view_model.dart';
 import '../../core/themes/app_colors.dart';
@@ -29,6 +30,7 @@ class _HeroSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return SizedBox(
       height: 300,
       width: double.infinity,
@@ -84,25 +86,25 @@ class _HeroSection extends StatelessWidget {
               ),
             ),
           ),
-          const Positioned(
+          Positioned(
             bottom: 24,
             left: 24,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ELITE PERFORMANCE',
-                  style: TextStyle(
+                  l10n.elitePerformance,
+                  style: const TextStyle(
                     color: AppColors.accent,
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     letterSpacing: 2,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
-                  'FUEL YOUR\nAMBITION',
-                  style: TextStyle(
+                  l10n.heroTagline,
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 26,
                     fontWeight: FontWeight.w900,
@@ -125,6 +127,7 @@ class _FormSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColorScheme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<LoginViewModel>(
       builder: (context, vm, _) {
         if (vm.status == LoginStatus.success) {
@@ -137,10 +140,10 @@ class _FormSection extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _FieldLabel('EMAIL ADDRESS', colors),
+              _FieldLabel(l10n.emailAddress, colors),
               const SizedBox(height: 8),
               _InputField(
-                hint: 'name@domain.com',
+                hint: l10n.emailHint,
                 icon: Icons.mail_outline,
                 onChanged: vm.onEmailChanged,
                 keyboardType: TextInputType.emailAddress,
@@ -150,12 +153,12 @@ class _FormSection extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _FieldLabel('PASSWORD', colors),
+                  _FieldLabel(l10n.password, colors),
                   GestureDetector(
                     onTap: () {},
-                    child: const Text(
-                      'Forgot Password?',
-                      style: TextStyle(color: AppColors.accent, fontSize: 12, fontWeight: FontWeight.w600),
+                    child: Text(
+                      l10n.forgotPassword,
+                      style: const TextStyle(color: AppColors.accent, fontSize: 12, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ],
@@ -181,14 +184,14 @@ class _FormSection extends StatelessWidget {
                 Text(vm.errorMessage!, style: const TextStyle(color: Colors.redAccent, fontSize: 12)),
               ],
               const SizedBox(height: 32),
-              _LoginButton(onTap: vm.login, isLoading: vm.isLoading),
+              _LoginButton(label: l10n.logIn, onTap: vm.login, isLoading: vm.isLoading),
               const SizedBox(height: 28),
               Row(
                 children: [
                   Expanded(child: Divider(color: colors.divider)),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text('OR CONTINUE WITH',
+                    child: Text(l10n.orContinueWith,
                         style: TextStyle(color: colors.textSecondary, fontSize: 11, fontWeight: FontWeight.w600, letterSpacing: 1)),
                   ),
                   Expanded(child: Divider(color: colors.divider)),
@@ -213,12 +216,12 @@ class _FormSection extends StatelessWidget {
               Center(
                 child: RichText(
                   text: TextSpan(
-                    text: 'NEW TO ENERGYM?  ',
+                    text: '${l10n.newToEnerGym}  ',
                     style: TextStyle(color: colors.textSecondary, fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 1),
-                    children: const [
+                    children: [
                       TextSpan(
-                        text: 'SIGN UP NOW',
-                        style: TextStyle(color: AppColors.accent, fontWeight: FontWeight.w800, letterSpacing: 1),
+                        text: l10n.signUpNow,
+                        style: const TextStyle(color: AppColors.accent, fontWeight: FontWeight.w800, letterSpacing: 1),
                       ),
                     ],
                   ),
@@ -290,9 +293,10 @@ class _InputField extends StatelessWidget {
 }
 
 class _LoginButton extends StatelessWidget {
+  final String label;
   final VoidCallback onTap;
   final bool isLoading;
-  const _LoginButton({required this.onTap, required this.isLoading});
+  const _LoginButton({required this.label, required this.onTap, required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
@@ -304,12 +308,12 @@ class _LoginButton extends StatelessWidget {
         child: Center(
           child: isLoading
               ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2.5))
-              : const Row(
+              : Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text('LOG IN', style: TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w800, letterSpacing: 2)),
-                    SizedBox(width: 10),
-                    Icon(Icons.arrow_forward, color: Colors.black, size: 18),
+                    Text(label, style: const TextStyle(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w800, letterSpacing: 2)),
+                    const SizedBox(width: 10),
+                    const Icon(Icons.arrow_forward, color: Colors.black, size: 18),
                   ],
                 ),
         ),

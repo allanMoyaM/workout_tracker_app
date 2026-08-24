@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../view_model/history_view_model.dart';
 import '../../../domain/models/workout_session.dart';
@@ -13,6 +14,7 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<HistoryViewModel>();
     final colors = AppColorScheme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: colors.background,
       appBar: const EnerGymAppBar(),
@@ -21,20 +23,20 @@ class HistoryScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _AttendanceHeader(vm: vm, colors: colors),
+            _AttendanceHeader(vm: vm, colors: colors, l10n: l10n),
             const SizedBox(height: 12),
-            _CalendarCard(vm: vm, colors: colors),
+            _CalendarCard(vm: vm, colors: colors, l10n: l10n),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('RECENT ACTIVITY',
+                Text(l10n.recentActivity,
                     style: TextStyle(color: colors.textSecondary, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.5)),
-                const Text('VIEW ALL', style: TextStyle(color: AppColors.accent, fontSize: 10, fontWeight: FontWeight.w700)),
+                Text(l10n.viewAll, style: const TextStyle(color: AppColors.accent, fontSize: 10, fontWeight: FontWeight.w700)),
               ],
             ),
             const SizedBox(height: 10),
-            ...vm.recentActivity.map((s) => _ActivityRow(session: s, colors: colors)),
+            ...vm.recentActivity.map((s) => _ActivityRow(session: s, colors: colors, l10n: l10n)),
           ],
         ),
       ),
@@ -45,7 +47,8 @@ class HistoryScreen extends StatelessWidget {
 class _AttendanceHeader extends StatelessWidget {
   final HistoryViewModel vm;
   final AppColorScheme colors;
-  const _AttendanceHeader({required this.vm, required this.colors});
+  final AppLocalizations l10n;
+  const _AttendanceHeader({required this.vm, required this.colors, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +65,7 @@ class _AttendanceHeader extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('MONTHLY ATTENDANCE',
+                Text(l10n.monthlyAttendance,
                     style: TextStyle(color: colors.textSecondary, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1)),
                 const SizedBox(height: 8),
                 RichText(
@@ -73,7 +76,7 @@ class _AttendanceHeader extends StatelessWidget {
                         style: const TextStyle(color: AppColors.accent, fontSize: 40, fontWeight: FontWeight.w900),
                       ),
                       TextSpan(
-                        text: ' / ${vm.targetSessions} SESSIONS',
+                        text: ' / ${vm.targetSessions} ${l10n.sessions}',
                         style: TextStyle(color: colors.textSecondary, fontSize: 14, fontWeight: FontWeight.w600),
                       ),
                     ],
@@ -85,7 +88,7 @@ class _AttendanceHeader extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text('CONSISTENCY', style: TextStyle(color: colors.textSecondary, fontSize: 10, letterSpacing: 1)),
+              Text(l10n.consistency, style: TextStyle(color: colors.textSecondary, fontSize: 10, letterSpacing: 1)),
               const SizedBox(height: 4),
               Text('${vm.consistencyPercent}%',
                   style: TextStyle(color: colors.textPrimary, fontSize: 28, fontWeight: FontWeight.w900)),
@@ -100,7 +103,8 @@ class _AttendanceHeader extends StatelessWidget {
 class _CalendarCard extends StatelessWidget {
   final HistoryViewModel vm;
   final AppColorScheme colors;
-  const _CalendarCard({required this.vm, required this.colors});
+  final AppLocalizations l10n;
+  const _CalendarCard({required this.vm, required this.colors, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
@@ -155,8 +159,8 @@ class _CalendarCard extends StatelessWidget {
     const today = 16;
 
     final cells = <int?>[...List.filled(startOffset, null)];
-    for (int d = 1; d <= daysInMonth; d++) cells.add(d);
-    while (cells.length % 7 != 0) cells.add(null);
+    for (int d = 1; d <= daysInMonth; d++) { cells.add(d); }
+    while (cells.length % 7 != 0) { cells.add(null); }
 
     final rows = <Widget>[];
     for (int i = 0; i < cells.length; i += 7) {
@@ -200,7 +204,8 @@ class _CalendarCard extends StatelessWidget {
 class _ActivityRow extends StatelessWidget {
   final WorkoutSession session;
   final AppColorScheme colors;
-  const _ActivityRow({required this.session, required this.colors});
+  final AppLocalizations l10n;
+  const _ActivityRow({required this.session, required this.colors, required this.l10n});
 
   @override
   Widget build(BuildContext context) {
@@ -238,7 +243,7 @@ class _ActivityRow extends StatelessWidget {
             children: [
               Text('${session.durationMinutes}M',
                   style: TextStyle(color: colors.textPrimary, fontSize: 14, fontWeight: FontWeight.w800)),
-              const Text('480 kcal', style: TextStyle(color: AppColors.accent, fontSize: 11, fontWeight: FontWeight.w600)),
+              Text('480 ${l10n.kcal}', style: const TextStyle(color: AppColors.accent, fontSize: 11, fontWeight: FontWeight.w600)),
             ],
           ),
         ],

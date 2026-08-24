@@ -1,0 +1,89 @@
+{
+  "@@locale": "en",
+
+  "elitePerformance": "ELITE PERFORMANCE",
+  "heroTagline": "FUEL YOUR\nAMBITION",
+  "emailAddress": "EMAIL ADDRESS",
+  "emailHint": "name@domain.com",
+  "password": "PASSWORD",
+  "forgotPassword": "Forgot Password?",
+  "logIn": "LOG IN",
+  "orContinueWith": "OR CONTINUE WITH",
+  "newToEnerGym": "NEW TO ENERGYM?",
+  "signUpNow": "SIGN UP NOW",
+
+  "dashboardGreeting": "Ready to push your limits today?",
+  "workoutStreak": "WORKOUT STREAK",
+  "days": "DAYS",
+  "startWorkout": "START WORKOUT",
+  "lastWorkout": "LAST WORKOUT",
+  "nextSession": "NEXT SESSION",
+  "attendance": "ATTENDANCE",
+  "monthlyGoal": "MONTHLY GOAL",
+  "daysAhead": "You're 2 days ahead of schedule",
+  "community": "COMMUNITY",
+  "communityChallenge": "NEW JUNE CHALLENGES",
+
+  "currentExercise": "CURRENT EXERCISE",
+  "restSeconds": "REST (SEC.)",
+  "velocity": "VELOC.",
+  "series": "SERIES",
+  "target": "TARGET",
+  "repsAt": "{reps} REPS @ {weight}kg",
+  "@repsAt": {
+    "placeholders": {
+      "reps": { "type": "int" },
+      "weight": { "type": "int" }
+    }
+  },
+  "weightKg": "WEIGHT (KG)",
+  "repetitions": "REPETITIONS",
+  "completeSet": "COMPLETE SET",
+  "upcomingExercises": "UPCOMING EXERCISES",
+  "remaining": "{count} REMAINING",
+  "@remaining": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
+  },
+
+  "monthlyAttendance": "MONTHLY ATTENDANCE",
+  "sessions": "SESSIONS",
+  "consistency": "CONSISTENCY",
+  "recentActivity": "RECENT ACTIVITY",
+  "viewAll": "VIEW ALL",
+  "kcal": "kcal",
+
+  "currentWeight": "CURRENT WEIGHT",
+  "kg": "KG",
+  "height": "HEIGHT",
+  "cm": "CM",
+  "bodyFat": "BF %",
+  "mainLiftProgression": "MAIN LIFT PROGRESSION",
+  "trainingGoals": "TRAINING GOALS",
+  "targetWeight": "Target Weight: {weight}kg",
+  "@targetWeight": {
+    "placeholders": {
+      "weight": { "type": "int" }
+    }
+  },
+  "weeklySession": "Weekly Session: {done}/{target}",
+  "@weeklySession": {
+    "placeholders": {
+      "done": { "type": "int" },
+      "target": { "type": "int" }
+    }
+  },
+  "updateGoals": "UPDATE GOALS",
+  "appPreferences": "APP PREFERENCES",
+  "notifications": "Notifications",
+  "darkMode": "Dark Mode",
+  "language": "Language",
+  "syncHealthKit": "Sync Health Kit",
+  "logOut": "Log Out",
+
+  "navHome": "Home",
+  "navWorkout": "Workout",
+  "navHistory": "History",
+  "navProfile": "Profile"
+}

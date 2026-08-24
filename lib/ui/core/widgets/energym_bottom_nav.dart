@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../themes/app_colors.dart';
 import '../themes/app_color_scheme.dart';
 
@@ -15,6 +16,7 @@ class EnerGymBottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = AppColorScheme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       height: 72,
       decoration: BoxDecoration(
@@ -24,10 +26,10 @@ class EnerGymBottomNav extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _NavItem(icon: Icons.grid_view_rounded, label: 'Home', index: 0, currentIndex: currentIndex, onTap: onTap),
-          _NavItem(icon: Icons.fitness_center, label: 'Workout', index: 1, currentIndex: currentIndex, onTap: onTap),
-          _NavItem(icon: Icons.calendar_month_outlined, label: 'History', index: 2, currentIndex: currentIndex, onTap: onTap),
-          _NavItem(icon: Icons.person_outline, label: 'Profile', index: 3, currentIndex: currentIndex, onTap: onTap),
+          _NavItem(icon: Icons.grid_view_rounded, label: l10n.navHome, index: 0, currentIndex: currentIndex, onTap: onTap),
+          _NavItem(icon: Icons.fitness_center, label: l10n.navWorkout, index: 1, currentIndex: currentIndex, onTap: onTap),
+          _NavItem(icon: Icons.calendar_month_outlined, label: l10n.navHistory, index: 2, currentIndex: currentIndex, onTap: onTap),
+          _NavItem(icon: Icons.person_outline, label: l10n.navProfile, index: 3, currentIndex: currentIndex, onTap: onTap),
         ],
       ),
     );

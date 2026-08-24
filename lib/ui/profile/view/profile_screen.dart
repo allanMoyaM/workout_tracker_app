@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../view_model/profile_view_model.dart';
 import '../../core/themes/app_colors.dart';
 import '../../core/themes/app_color_scheme.dart';
 import '../../core/view_model/theme_notifier.dart';
+import '../../core/view_model/locale_notifier.dart';
 import '../../core/widgets/energym_app_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -13,7 +15,9 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<ProfileViewModel>();
     final themeNotifier = context.watch<ThemeNotifier>();
+    final localeNotifier = context.watch<LocaleNotifier>();
     final colors = AppColorScheme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final p = vm.profile;
 
     return Scaffold(
@@ -72,7 +76,7 @@ class ProfileScreen extends StatelessWidget {
             _Card(colors: colors, child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('CURRENT WEIGHT',
+                Text(l10n.currentWeight,
                     style: TextStyle(color: colors.textSecondary, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.5)),
                 const SizedBox(height: 6),
                 Row(
@@ -82,16 +86,16 @@ class ProfileScreen extends StatelessWidget {
                         style: const TextStyle(color: AppColors.accent, fontSize: 52, fontWeight: FontWeight.w900, height: 1)),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8, left: 4),
-                      child: Text('KG', style: TextStyle(color: colors.textSecondary, fontSize: 18, fontWeight: FontWeight.w700)),
+                      child: Text(l10n.kg, style: TextStyle(color: colors.textSecondary, fontSize: 18, fontWeight: FontWeight.w700)),
                     ),
                   ],
                 ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    _StatChip(label: 'HEIGHT', value: '${p.heightCm.toInt()} CM', colors: colors),
+                    _StatChip(label: l10n.height, value: '${p.heightCm.toInt()} ${l10n.cm}', colors: colors),
                     const SizedBox(width: 24),
-                    _StatChip(label: 'BF %', value: '${p.bodyFatPercent}%', colors: colors),
+                    _StatChip(label: l10n.bodyFat, value: '${p.bodyFatPercent}%', colors: colors),
                   ],
                 ),
               ],
@@ -101,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
             _Card(colors: colors, child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('MAIN LIFT PROGRESSION',
+                Text(l10n.mainLiftProgression,
                     style: TextStyle(color: colors.textSecondary, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1)),
                 const SizedBox(height: 12),
                 SizedBox(
@@ -133,16 +137,16 @@ class ProfileScreen extends StatelessWidget {
             _Card(colors: colors, child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('TRAINING GOALS',
+                Text(l10n.trainingGoals,
                     style: TextStyle(color: colors.textSecondary, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.5)),
                 const SizedBox(height: 14),
                 _GoalBar(
-                  label: 'Target Weight: ${p.targetWeightKg.toInt()}kg',
+                  label: l10n.targetWeight(p.targetWeightKg.toInt()),
                   percent: 0.76, percentLabel: '76%', colors: colors,
                 ),
                 const SizedBox(height: 12),
                 _GoalBar(
-                  label: 'Weekly Session: ${p.weeklySessionsDone}/${p.weeklySessionTarget}',
+                  label: l10n.weeklySession(p.weeklySessionsDone, p.weeklySessionTarget),
                   percent: p.weeklySessionProgress,
                   percentLabel: '${(p.weeklySessionProgress * 100).toInt()}%',
                   colors: colors,
@@ -153,13 +157,13 @@ class ProfileScreen extends StatelessWidget {
                   child: Container(
                     height: 48,
                     decoration: BoxDecoration(color: AppColors.accent, borderRadius: BorderRadius.circular(10)),
-                    child: const Row(
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.tune, color: Colors.black, size: 18),
-                        SizedBox(width: 8),
-                        Text('UPDATE GOALS',
-                            style: TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w800, letterSpacing: 1)),
+                        const Icon(Icons.tune, color: Colors.black, size: 18),
+                        const SizedBox(width: 8),
+                        Text(l10n.updateGoals,
+                            style: const TextStyle(color: Colors.black, fontSize: 13, fontWeight: FontWeight.w800, letterSpacing: 1)),
                       ],
                     ),
                   ),
@@ -171,37 +175,58 @@ class ProfileScreen extends StatelessWidget {
             _Card(colors: colors, child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('APP PREFERENCES',
+                Text(l10n.appPreferences,
                     style: TextStyle(color: colors.textSecondary, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1.5)),
                 const SizedBox(height: 12),
                 _PrefToggle(
                   icon: Icons.notifications_outlined,
-                  label: 'Notifications',
+                  label: l10n.notifications,
                   value: vm.notificationsEnabled,
                   onChanged: (_) => vm.toggleNotifications(),
                   colors: colors,
                 ),
                 _PrefToggle(
                   icon: Icons.dark_mode_outlined,
-                  label: 'Dark Mode',
+                  label: l10n.darkMode,
                   value: themeNotifier.isDark,
                   onChanged: (_) => context.read<ThemeNotifier>().toggle(),
                   colors: colors,
                 ),
                 _PrefRow(
+                  icon: Icons.language,
+                  label: l10n.language,
+                  trailing: GestureDetector(
+                    onTap: () => context.read<LocaleNotifier>().toggle(),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.accent.withOpacity(0.15),
+                        borderRadius: BorderRadius.circular(6),
+                        border: Border.all(color: AppColors.accent.withOpacity(0.4)),
+                      ),
+                      child: Text(
+                        localeNotifier.isEnglish ? 'EN' : 'ES',
+                        style: const TextStyle(color: AppColors.accent, fontSize: 12, fontWeight: FontWeight.w800),
+                      ),
+                    ),
+                  ),
+                  colors: colors,
+                ),
+                _PrefRow(
                   icon: Icons.sync,
-                  label: 'Sync Health Kit',
+                  label: l10n.syncHealthKit,
                   trailing: Icon(Icons.chevron_right, color: colors.textSecondary, size: 18),
                   colors: colors,
                 ),
                 Divider(color: colors.divider, height: 20),
                 _PrefRow(
                   icon: Icons.logout,
-                  label: 'Log Out',
+                  label: l10n.logOut,
                   iconColor: Colors.redAccent,
                   labelColor: Colors.redAccent,
                   trailing: const SizedBox.shrink(),
                   colors: colors,
+                  onTap: () => Navigator.pushReplacementNamed(context, '/'),
                 ),
               ],
             )),
@@ -335,19 +360,23 @@ class _PrefRow extends StatelessWidget {
   final AppColorScheme colors;
   final Color? iconColor;
   final Color? labelColor;
-  const _PrefRow({required this.icon, required this.label, required this.trailing, required this.colors, this.iconColor, this.labelColor});
+  final VoidCallback? onTap;
+  const _PrefRow({required this.icon, required this.label, required this.trailing, required this.colors, this.iconColor, this.labelColor, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        children: [
-          Icon(icon, color: iconColor ?? colors.textSecondary, size: 18),
-          const SizedBox(width: 12),
-          Expanded(child: Text(label, style: TextStyle(color: labelColor ?? colors.textPrimary, fontSize: 13))),
-          trailing,
-        ],
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Row(
+          children: [
+            Icon(icon, color: iconColor ?? colors.textSecondary, size: 18),
+            const SizedBox(width: 12),
+            Expanded(child: Text(label, style: TextStyle(color: labelColor ?? colors.textPrimary, fontSize: 13))),
+            trailing,
+          ],
+        ),
       ),
     );
   }
