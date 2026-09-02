@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'routing/router.dart';
 import 'ui/core/themes/app_theme.dart';
 import 'ui/core/view_model/theme_notifier.dart';
@@ -46,7 +47,9 @@ class App extends StatelessWidget {
             Locale('es'),
           ],
           onGenerateRoute: AppRouter.onGenerateRoute,
-          initialRoute: AppRouter.login,
+          initialRoute: Supabase.instance.client.auth.currentSession != null
+              ? AppRouter.shell
+              : AppRouter.login,
         ),
       ),
     );

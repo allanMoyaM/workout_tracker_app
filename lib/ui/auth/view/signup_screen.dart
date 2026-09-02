@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import '../view_model/login_view_model.dart';
+import '../view_model/signup_view_model.dart';
 import '../../core/themes/app_colors.dart';
 import '../../core/themes/app_color_scheme.dart';
-import '../../../routing/router.dart';
+import '../../core/widgets/loading_indicator.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatelessWidget {
+  const SignUpScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final colors = AppColorScheme.of(context);
-    return Scaffold(
-      backgroundColor: colors.background,
-      body: SingleChildScrollView(
-        child: Column(
-          children: const [
-            _HeroSection(),
-            _FormSection(),
-          ],
+    return ChangeNotifierProvider(
+      create: (_) => SignUpViewModel(),
+      child: Scaffold(
+        backgroundColor: colors.background,
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [
+              _HeroSection(),
+              _FormSection(),
+            ],
+          ),
         ),
       ),
     );
@@ -33,7 +36,7 @@ class _HeroSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     return SizedBox(
-      height: 300,
+      height: 200,
       width: double.infinity,
       child: Stack(
         fit: StackFit.expand,
@@ -90,30 +93,14 @@ class _HeroSection extends StatelessWidget {
           Positioned(
             bottom: 24,
             left: 24,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  l10n.elitePerformance,
-                  style: const TextStyle(
-                    color: AppColors.accent,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w700,
-                    letterSpacing: 2,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  l10n.heroTagline,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 26,
-                    fontWeight: FontWeight.w900,
-                    letterSpacing: 1,
-                    height: 1.1,
-                  ),
-                ),
-              ],
+            child: Text(
+              l10n.createAccount,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 1,
+              ),
             ),
           ),
         ],
@@ -129,11 +116,11 @@ class _FormSection extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = AppColorScheme.of(context);
     final l10n = AppLocalizations.of(context)!;
-    return Consumer<LoginViewModel>(
+    return Consumer<SignUpViewModel>(
       builder: (context, vm, _) {
-        if (vm.status == LoginStatus.success) {
+        if (vm.status == SignUpStatus.success) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            Navigator.of(context).pushReplacementNamed('/home');
+            _showConfirmEmailDialog(context, l10n);
           });
         }
         return Padding(
@@ -146,24 +133,12 @@ class _FormSection extends StatelessWidget {
               _InputField(
                 hint: l10n.emailHint,
                 icon: Icons.mail_outline,
-                onChanged: vm.onEmailChanged,
                 keyboardType: TextInputType.emailAddress,
+                onChanged: vm.onEmailChanged,
                 colors: colors,
               ),
               const SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _FieldLabel(l10n.password, colors),
-                  GestureDetector(
-                    onTap: () => _showForgotPasswordDialog(context, vm, l10n),
-                    child: Text(
-                      l10n.forgotPassword,
-                      style: const TextStyle(color: AppColors.accent, fontSize: 12, fontWeight: FontWeight.w600),
-                    ),
-                  ),
-                ],
-              ),
+              _FieldLabel(l10n.password, colors),
               const SizedBox(height: 8),
               _InputField(
                 hint: '••••••••',
@@ -180,50 +155,33 @@ class _FormSection extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 24),
+              _FieldLabel(l10n.confirmPassword, colors),
+              const SizedBox(height: 8),
+              _InputField(
+                hint: '••••••••',
+                icon: Icons.lock_outline,
+                obscureText: !vm.isPasswordVisible,
+                onChanged: vm.onConfirmPasswordChanged,
+                colors: colors,
+              ),
               if (vm.errorMessage != null) ...[
                 const SizedBox(height: 12),
                 Text(vm.errorMessage!, style: const TextStyle(color: Colors.redAccent, fontSize: 12)),
               ],
               const SizedBox(height: 32),
-              _LoginButton(label: l10n.logIn, onTap: vm.login, isLoading: vm.isLoading),
-              const SizedBox(height: 28),
-              Row(
-                children: [
-                  Expanded(child: Divider(color: colors.divider)),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Text(l10n.orContinueWith,
-                        style: TextStyle(color: colors.textSecondary, fontSize: 11, fontWeight: FontWeight.w600, letterSpacing: 1)),
-                  ),
-                  Expanded(child: Divider(color: colors.divider)),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Row(
-                children: [
-                  Expanded(child: _SocialButton(label: 'Google', icon: _GoogleIcon(), onTap: vm.loginWithGoogle, colors: colors)),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: _SocialButton(
-                      label: 'Apple',
-                      icon: Icon(Icons.apple, color: colors.textPrimary, size: 20),
-                      onTap: vm.loginWithApple,
-                      colors: colors,
-                    ),
-                  ),
-                ],
-              ),
+              _SignUpButton(label: l10n.signUp, onTap: vm.signUp, isLoading: vm.isLoading),
               const SizedBox(height: 36),
               Center(
                 child: GestureDetector(
-                  onTap: () => Navigator.of(context).pushNamed(AppRouter.signup),
+                  onTap: () => Navigator.of(context).pop(),
                   child: RichText(
                     text: TextSpan(
-                      text: '${l10n.newToEnerGym}  ',
+                      text: '${l10n.alreadyHaveAccount}  ',
                       style: TextStyle(color: colors.textSecondary, fontSize: 12, fontWeight: FontWeight.w600, letterSpacing: 1),
                       children: [
                         TextSpan(
-                          text: l10n.signUpNow,
+                          text: l10n.logIn,
                           style: const TextStyle(color: AppColors.accent, fontWeight: FontWeight.w800, letterSpacing: 1),
                         ),
                       ],
@@ -238,62 +196,26 @@ class _FormSection extends StatelessWidget {
     );
   }
 
-  void _showForgotPasswordDialog(BuildContext context, LoginViewModel vm, AppLocalizations l10n) {
-    final controller = TextEditingController();
-    bool sent = false;
-
+  void _showConfirmEmailDialog(BuildContext context, AppLocalizations l10n) {
     showDialog(
       context: context,
-      builder: (ctx) => StatefulBuilder(
-        builder: (ctx, setState) => AlertDialog(
-          title: Text(l10n.resetPassword, style: const TextStyle(fontWeight: FontWeight.w800)),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(l10n.resetPasswordSubtitle, style: const TextStyle(fontSize: 13)),
-              const SizedBox(height: 16),
-              if (!sent)
-                TextField(
-                  controller: controller,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: const InputDecoration(
-                    hintText: 'name@domain.com',
-                    border: OutlineInputBorder(),
-                    isDense: true,
-                  ),
-                )
-              else
-                Row(
-                  children: [
-                    const Icon(Icons.check_circle, color: AppColors.accent, size: 20),
-                    const SizedBox(width: 8),
-                    Expanded(child: Text(l10n.resetLinkSent, style: const TextStyle(fontSize: 13))),
-                  ],
-                ),
-            ],
-          ),
-          actions: sent
-              ? [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(),
-                    child: Text(l10n.logIn, style: const TextStyle(color: AppColors.accent, fontWeight: FontWeight.w800)),
-                  ),
-                ]
-              : [
-                  TextButton(
-                    onPressed: () => Navigator.of(ctx).pop(),
-                    child: const Text('Cancel'),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      final ok = await vm.sendPasswordReset(controller.text.trim());
-                      if (ok) setState(() => sent = true);
-                    },
-                    child: Text(l10n.sendResetLink, style: const TextStyle(color: AppColors.accent, fontWeight: FontWeight.w800)),
-                  ),
-                ],
+      barrierDismissible: false,
+      builder: (_) => AlertDialog(
+        title: const Icon(Icons.mark_email_read_outlined, color: AppColors.accent, size: 48),
+        content: Text(
+          l10n.checkYourEmail,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 14),
         ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // cierra dialog
+              Navigator.of(context).pop(); // vuelve a login
+            },
+            child: Text(l10n.logIn, style: const TextStyle(color: AppColors.accent, fontWeight: FontWeight.w800)),
+          ),
+        ],
       ),
     );
   }
@@ -356,11 +278,11 @@ class _InputField extends StatelessWidget {
   }
 }
 
-class _LoginButton extends StatelessWidget {
+class _SignUpButton extends StatelessWidget {
   final String label;
   final VoidCallback onTap;
   final bool isLoading;
-  const _LoginButton({required this.label, required this.onTap, required this.isLoading});
+  const _SignUpButton({required this.label, required this.onTap, required this.isLoading});
 
   @override
   Widget build(BuildContext context) {
@@ -371,7 +293,7 @@ class _LoginButton extends StatelessWidget {
         decoration: BoxDecoration(color: AppColors.accent, borderRadius: BorderRadius.circular(12)),
         child: Center(
           child: isLoading
-              ? const SizedBox(width: 22, height: 22, child: CircularProgressIndicator(color: Colors.black, strokeWidth: 2.5))
+              ? const LoadingIndicator()
               : Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -383,43 +305,5 @@ class _LoginButton extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class _SocialButton extends StatelessWidget {
-  final String label;
-  final Widget icon;
-  final VoidCallback onTap;
-  final AppColorScheme colors;
-  const _SocialButton({required this.label, required this.icon, required this.onTap, required this.colors});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        height: 52,
-        decoration: BoxDecoration(
-          color: colors.buttonSecondary,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: colors.inputBorder),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon,
-            const SizedBox(width: 10),
-            Text(label, style: TextStyle(color: colors.textPrimary, fontSize: 14, fontWeight: FontWeight.w600)),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _GoogleIcon extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const Text('G', style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w700));
   }
 }

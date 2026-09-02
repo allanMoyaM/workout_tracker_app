@@ -7,6 +7,7 @@ import '../../core/themes/app_color_scheme.dart';
 import '../../core/view_model/theme_notifier.dart';
 import '../../core/view_model/locale_notifier.dart';
 import '../../core/widgets/energym_app_bar.dart';
+import '../../../data/services/auth_service.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -226,7 +227,12 @@ class ProfileScreen extends StatelessWidget {
                   labelColor: Colors.redAccent,
                   trailing: const SizedBox.shrink(),
                   colors: colors,
-                  onTap: () => Navigator.pushReplacementNamed(context, '/'),
+                  onTap: () async {
+                    await AuthService().signOut();
+                    if (context.mounted) {
+                      Navigator.pushReplacementNamed(context, '/');
+                    }
+                  },
                 ),
               ],
             )),
